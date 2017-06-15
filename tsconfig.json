@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "rootDir": "./",
+        "outDir": "./build/",
+        "module": "commonjs",
+        "declaration": true,
+        "noImplicitAny": false,
+        "removeComments": true,
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "inlineSources": false,
+        "baseUrl": ".",
+        "paths": {
+            "*": ["*"]
+        },
+        "lib": ["es2017"],
+        "typeRoots": [
+        ],
+        "types": ["node", "chai", "mocha"]
+    },
+    "include": [
+        "index.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
