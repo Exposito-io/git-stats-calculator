@@ -48,6 +48,7 @@ __license__ = __licence__  # weird foreign language
 
 
 RE_AUTHS = re.compile('^author (.+)$', flags=re.M)
+RE_AUTH_EMAILS = re.compile('^author-mail <(.+)>$', flags=re.M)
 # finds all non-escaped commas
 # NB: does not support escaping of escaped character
 RE_CSPILT = re.compile(r'(?<!\\),')
@@ -56,7 +57,6 @@ RE_NCOM_AUTH_EM = re.compile(r'^\s*(\d+)\s+(.*)\s+<(.*)>\s*$', flags=re.M)
 
 def tr_hline(col_widths, hl='-', x='+'):
   return x + x.join(hl * i for i in col_widths) + x
-
 
 def tabulate(auth_stats, stats_tot, args_sort='loc', args_bytype=False):
   COL_NAMES = ['Author', 'loc', 'coms', 'fils', ' distribution']
@@ -183,6 +183,7 @@ def run(args):
   # ! iterating over files
 
   git_cmd = ["git", "-C", gitdir]
+
   file_list = check_output(git_cmd + ["ls-files"]).strip().split('\n')
   if args['--no-regex']:
     file_list = [i for i in file_list
@@ -192,7 +193,7 @@ def run(args):
     file_list = [i for i in file_list
                  if include_files.search(i)
                  if not (args["--excl"] and exclude_files.search(i))]
-  # print(file_list)
+  #print(file_list)
 
   auth_stats = {}
   for fname in tqdm(file_list, desc="Blame", disable=args["--silent-progress"]):
@@ -207,8 +208,12 @@ def run(args):
       blame_out = check_output(git_blame_cmd, stderr=subprocess.STDOUT)
     except:
       continue
-    # print (blame_out)
+
+    #print (blame_out)
     auths = RE_AUTHS.findall(blame_out)
+    emails = RE_AUTH_EMAILS.findall(blame_out)
+
+    #print(emails)
 
     for auth in map(_str, auths):
       try:
