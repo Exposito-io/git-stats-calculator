@@ -54,6 +54,8 @@ RE_AUTH_EMAILS = re.compile('^author-mail <(.+)>$', flags=re.M)
 RE_CSPILT = re.compile(r'(?<!\\),')
 RE_NCOM_AUTH_EM = re.compile(r'^\s*(\d+)\s+(.*)\s+<(.*)>\s*$', flags=re.M)
 
+authorInfos = []
+
 
 def tr_hline(col_widths, hl='-', x='+'):
   return x + x.join(hl * i for i in col_widths) + x
