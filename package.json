@@ -11,5 +11,10 @@
     "url": "ubuntu@git.quantal.io:~/git/Exposito/git-stats-calculator.git"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "blamejs": "^1.0.0",
+    "git-tools": "^0.2.1",
+    "simple-git": "^1.73.0"
+  }
 }
