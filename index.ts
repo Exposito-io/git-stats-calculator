@@ -1,22 +1,24 @@
 import * as git from 'simple-git'
 
-export async function gitStats(opts: GitStatsOptions) {
+export async function gitStats(opts?: GitStatsOptions) {
 
     return new Promise((resolve, reject) => {
 
         opts = Object.assign(new GitStatsOptions(), opts)
 
-        git(opts.dir).raw(
-        [
-            'config',
-            '--global',
-            'advice.pushNonFastForward',
-            'false'
-        ], (err, result) => {
-        
-            // err is null unless this command failed
-            // result is the raw output of this command
-        
+    })
+}
+
+function gitLsFiles(dir: string = './'): Promise<string[]> {
+    return new Promise((resolve, reject) => {
+        git(dir).raw(['ls-files'], (err, result) => {    
+            if (err)
+                return reject(err)
+
+            let files = result.split(/\r?\n/)
+            // remove last line because it's empty
+            files.pop()
+            resolve(files)           
         })
     })
 }
@@ -26,3 +28,16 @@ export class GitStatsOptions {
     exclude?: string[]
     include?: string[]
 }
+
+
+console.log('fawe')
+
+gitLsFiles()
+.then(files => {
+    for(let file of files) {
+        console.log(files)
+    }
+})
+.catch(err => {
+    console.log(err)
+})

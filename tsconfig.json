@@ -14,10 +14,10 @@
         "paths": {
             "*": ["*"]
         },
-        "lib": ["es2017"],
+        "lib": ["es2017", "dom"],
         "typeRoots": [
         ],
-        "types": ["node", "chai", "mocha"]
+        "types": ["chai", "mocha"]
     },
     "include": [
         "index.ts"
