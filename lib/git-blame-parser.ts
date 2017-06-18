@@ -17,9 +17,9 @@ export function parseBlame(blame: string): LineInfo[] {
         }
         else {
             let parsedLine = parseLine(line.split(" "))
-            lineInfo[parsedLine.type] = parsedLine.value
-            if (parsedLine.type === undefined)
-                console.log('undefined: ' + line)
+            
+            if (parsedLine.type !== undefined)
+                lineInfo[parsedLine.type] = parsedLine.value
         }
     }
 
@@ -42,10 +42,13 @@ function parseLine(lineArr: string[]) {
   }
   else {
     switch(lineArr[0]) {
+        case "":
+        break
+
         case "author":
         currentCommitData.type = 'author'
-        currentCommitData.value = lineArr.slice(1).join(" ");
-        break;
+        currentCommitData.value = lineArr.slice(1).join(" ")
+        break
 
         case "author-mail":
         currentCommitData.type = 'authorMail'
@@ -97,8 +100,14 @@ function parseLine(lineArr: string[]) {
         currentCommitData.value = lineArr.slice(1).join(" ");
         break;
 
-        default:
+        case "boundary":
+        currentCommitData.type = 'boundary'
+        currentCommitData.value = true
         break;
+
+        default:
+            throw('Unable to parse blame line: ' + lineArr)
+
     }
   }
 
@@ -118,5 +127,6 @@ export class LineInfo {
     summary: string
     filename: string
     previous: string
+    commit: string
 
 }
