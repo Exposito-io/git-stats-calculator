@@ -1,4 +1,20 @@
-export function parseBlame(blame: string): LineInfo[] {
+import * as git from 'simple-git'
+
+export function gitBlame(opts: GitBlameOptions): Promise<LineInfo[]> {
+    return new Promise((resolve, reject) => {
+        opts = Object.assign(new GitBlameOptions(), opts)
+        
+        git(opts.dir).raw(['blame', opts.file, '--line-porcelain'], (err, result) => {    
+            if (err)
+                return reject(err)
+            
+            resolve(parseBlame(result))          
+        })       
+    })
+}
+
+
+function parseBlame(blame: string): LineInfo[] {
     let lines = blame.split('\n')
     let lineInfos = []
 
@@ -128,5 +144,11 @@ export class LineInfo {
     filename: string
     previous: string
     commit: string
+
+}
+
+export class GitBlameOptions {
+    dir?: string = './'
+    file: string
 
 }
