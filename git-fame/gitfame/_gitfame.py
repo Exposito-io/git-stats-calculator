@@ -130,6 +130,7 @@ def tabulate(auth_stats, stats_tot, args_sort='loc', args_bytype=False):
     loc = stats["loc"]
     commits = stats.get("commits", 0)
     files = len(stats.get("files", []))
+    print(stats["files"])
     # TODO:
     # if args_bytype:
     #   print ([stats.get("files", []) ])

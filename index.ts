@@ -14,6 +14,7 @@ export async function gitStats(opts?: GitStatsOptions) {
     let stats = new Map<string, GitStat>()
 
     await async.eachLimit(files, 10, (file, done) => {
+
         gitBlame({ dir: opts.dir, file })
         .then(blames => {
 
@@ -32,9 +33,9 @@ export async function gitStats(opts?: GitStatsOptions) {
 
                 let stat = stats.get(blame.author)
                 stat.linesOfCode++
-                
-                if (!stat.files.includes(blame.filename))
-                    stat.files.push(blame.filename)
+
+                if (!stat.files.includes(file))
+                    stat.files.push(file)
 
             }
 
@@ -80,7 +81,7 @@ console.log('fawe')
 gitStats({ dir: './'})
 .then(stats => {
     stats.forEach((value, key) => {
-        console.log(`${key}:  ${value.linesOfCode}  |  ${value.files.length}  |  ${JSON.stringify(value.files)}`)
+        console.log(`${key}:  ${value.linesOfCode}  |  ${value.files.length}`)
     }) 
 })
 .catch(err => {
