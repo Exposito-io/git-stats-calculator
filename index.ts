@@ -1,5 +1,6 @@
 import * as git from 'simple-git'
 import { gitLsFiles } from './lib/git-ls-files'
+import { gitLsTree } from './lib/git-ls-tree'
 import * as BlameJs from 'blamejs'
 import { gitBlame, LineInfo } from './lib/git-blame'
 import * as async from 'promise-async'
@@ -8,7 +9,8 @@ export async function gitStats(opts?: GitStatsOptions) {
 
     opts = Object.assign(new GitStatsOptions(), opts)
 
-    let files = await gitLsFiles(opts.dir)
+    //let files = await gitLsFiles(opts.dir)
+    let files = await gitLsTree(opts.dir)
     let stats = new Map<string, GitStat>()
 
     await async.eachLimit(files, 10, (file, done) => {
