@@ -19,8 +19,8 @@ export async function gitStats(opts?: GitStatsOptions) {
         .then(blames => {
 
             for(let blame of blames) {
-                if (!stats.has(blame.author)) {
-                    stats.set(blame.author, {
+                if (!stats.has(blame.authorMail)) {
+                    stats.set(blame.authorMail, {
                         author: {
                             name: blame.author,
                             email: blame.authorMail,
@@ -31,7 +31,7 @@ export async function gitStats(opts?: GitStatsOptions) {
                     })
                 }
 
-                let stat = stats.get(blame.author)
+                let stat = stats.get(blame.authorMail)
                 stat.linesOfCode++
 
                 if (!stat.files.includes(file))

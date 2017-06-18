@@ -68,53 +68,53 @@ function parseLine(lineArr: string[]) {
 
         case "author-mail":
         currentCommitData.type = 'authorMail'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1].replace('<', '').replace('>','')
+        break
 
         case "author-time":
         currentCommitData.type = 'authorTime'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1]
+        break
 
         case "author-tz":
         currentCommitData.type = 'authorTz'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1]
+        break
 
         case "committer":
         currentCommitData.type = 'committer'
-        currentCommitData.value = lineArr.slice(1).join(" ");
-        break;
+        currentCommitData.value = lineArr.slice(1).join(" ")
+        break
 
         case "committer-mail":
         currentCommitData.type = 'committerMail'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1]
+        break
 
         case "committer-time":
         currentCommitData.type = 'committerTime'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1]
+        break
 
         case "committer-tz":
         currentCommitData.type = 'committerTz'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1]
+        break
 
         case "summary":
         currentCommitData.type = 'summary'
-        currentCommitData.value = lineArr.slice(1).join(" ");
-        break;
+        currentCommitData.value = lineArr.slice(1).join(" ")
+        break
 
         case "filename":
         currentCommitData.type = 'filename'
-        currentCommitData.value = lineArr[1];
-        break;
+        currentCommitData.value = lineArr[1]
+        break
 
         case "previous":
         currentCommitData.type = 'previous'
-        currentCommitData.value = lineArr.slice(1).join(" ");
-        break;
+        currentCommitData.value = lineArr.slice(1).join(" ")
+        break
 
         case "boundary":
         currentCommitData.type = 'boundary'
