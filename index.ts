@@ -80,7 +80,7 @@ console.log('fawe')
 gitStats({ dir: './'})
 .then(stats => {
     stats.forEach((value, key) => {
-        console.log(`${key}:  ${value.linesOfCode}  |  ${value.files.length}`)
+        console.log(`${key}:  ${value.linesOfCode}  |  ${value.files.length}  |  ${JSON.stringify(value.files)}`)
     }) 
 })
 .catch(err => {
