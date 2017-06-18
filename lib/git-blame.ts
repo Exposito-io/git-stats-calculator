@@ -4,7 +4,7 @@ export function gitBlame(opts: GitBlameOptions): Promise<LineInfo[]> {
     return new Promise((resolve, reject) => {
         opts = Object.assign(new GitBlameOptions(), opts)
         
-        git(opts.dir).raw(['blame', opts.file, '--line-porcelain'], (err, result) => {    
+        git(opts.dir).raw(['blame', 'master', '--line-porcelain', '--', opts.file], (err, result) => {    
             if (err)
                 return reject(err)
             
