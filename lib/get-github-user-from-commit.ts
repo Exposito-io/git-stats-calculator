@@ -1,3 +1,4 @@
+import { PaymentDestination } from 'models'
 import * as GitHubApi from 'github'
 
 let github = new GitHubApi()

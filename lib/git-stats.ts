@@ -58,6 +58,7 @@ export class GitAuthor {
     name: string
     email: string
     commitSample: string
+    availablePaymentMethods?: any[]
 }
 
 export class GitStat {

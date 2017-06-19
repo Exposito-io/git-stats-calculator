@@ -2,12 +2,44 @@ import { gitStats } from './lib/git-stats'
 import * as GitHubApi from 'github'
 import { getGithubUserFromCommit } from './lib/get-github-user-from-commit'
 import { PaymentDestination } from 'models'
+import * as fs from 'fs'
+import * as simplegit from 'simple-git'
+
+const configRepoPath = './repos'
 
 let github = new GitHubApi()
 
 export async function getGithubStats(repoUrl: string) {
+    let repo = getGithubRepoInfoFromUrl(repoUrl)
+    let repoPath = `${configRepoPath}/${repo.owner}/${repo.repo}`
+    let repoInfo = await github.repos.get({ owner: repo.owner, repo: repo.repo })
+    let git
+
+    if (!fs.existsSync(repoPath)) {
+        git = simplegit(`${configRepoPath}`)
+        await git.clone(repoInfo.clone_url, repoPath, { bare: true})
+    }
+
+    git = simplegit(repoPath)
+    
+    await git.pull(repoInfo.clone_url)
+
+    let stats = await gitStats({ dir: repoPath })
+
+    for(let s of stats) {
+        let stat = s[1]
+        let githubUser = await getGithubUserFromCommit({ 
+            owner: repoInfo.owner,
+            repo: repoInfo.repo,
+            commit: stat.author.commitSample 
+        })
+
+        stat.author.availablePaymentMethods = githubUser.availablePaymentsMethods
+    }
     
 }
+
+
 
 
 
