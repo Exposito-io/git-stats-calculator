@@ -96,6 +96,9 @@ getGithubStats('macor161/ts-money')
 .then(result => {
     //for(let file of files) {
         console.log(result)
+
+        if (result.has('mathew.corm@gmail.com'))
+            console.log(JSON.stringify(result.get('mathew.corm@gmail.com').author.availablePaymentMethods))
     //}
 })
 .catch(err => {

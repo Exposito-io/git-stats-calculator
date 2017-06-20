@@ -57,7 +57,7 @@ async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ pa
             .pickBy(file => PAYMENT_FILE_NAMES.map(f => f.name).includes(file.filename.toLowerCase()))
             .pickBy(file => validatePaymentFileContent(file.filename.toLowerCase(), file.content))
             .map(file => ({ 
-                paymentType: PAYMENT_FILE_NAMES.find(f => f.name === file.filename.toLowerCase()), 
+                paymentType: PAYMENT_FILE_NAMES.find(f => f.name === file.filename.toLowerCase()).paymentType, 
                 destination: file.content 
             }))
             .value()
