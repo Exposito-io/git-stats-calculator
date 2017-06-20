@@ -15,14 +15,17 @@
   "license": "MIT",
   "dependencies": {
     "blamejs": "^1.0.0",
+    "fs-extra": "^3.0.1",
     "git-tools": "^0.2.1",
     "github": "^9.2.0",
+    "lodash": "^4.17.4",
     "promise-async": "^0.2.0",
     "simple-git": "^1.73.0"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/github": "^7.1.0",
+    "@types/lodash": "^4.14.66",
     "@types/mocha": "^2.2.41",
     "@types/node": "^7.0.22",
     "chai": "^3.5.0",

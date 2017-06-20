@@ -1,5 +1,6 @@
 import { PaymentDestination } from 'models'
 import * as GitHubApi from 'github'
+import * as _ from 'lodash'
 
 let github = new GitHubApi()
 
@@ -17,7 +18,7 @@ export async function getGithubUserFromCommit(params: GetUserFromCommitParams) {
         sha: params.commit
     })
 
-    let user = commitInfo.author
+    let user = commitInfo.data.author
     user.availablePaymentsMethods = await getGitHubUserPaymentMethods(user.login)
 
     return user
@@ -41,24 +42,25 @@ const PAYMENT_FILE_NAMES = [
  */
 async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ paymentType: PaymentDestination, destination: string }[]> {
 
-    let gists = await github.gists.getForUser({
+    let gists = (await github.gists.getForUser({
         username: githubUsername        
-    })
+    })).data
 
-    let expositoGists = gists.filter(gist => gist.description.ToLowerCase().trim() === 'exposito')
+    let expositoGists = gists.filter(gist => gist.description.toLowerCase().trim() === 'exposito')
     let payments = []
 
     for(let gist of expositoGists) {
 
-        let gistWithFiles = await github.gists.get({ id: gist.id })
+        let gistWithFiles = (await github.gists.get({ id: gist.id })).data
 
-        payments = payments.concat(gistWithFiles
-            .filter(file => PAYMENT_FILE_NAMES.map(f => f.name).includes(file.filename.toLowerCase()))
-            .filter(file => validatePaymentFileContent(file.filename.toLowerCase(), file.content))
+        payments = payments.concat(_(gistWithFiles.files)
+            .pickBy(file => PAYMENT_FILE_NAMES.map(f => f.name).includes(file.filename.toLowerCase()))
+            .pickBy(file => validatePaymentFileContent(file.filename.toLowerCase(), file.content))
             .map(file => ({ 
                 paymentType: PAYMENT_FILE_NAMES.find(f => f.name === file.filename.toLowerCase()), 
                 destination: file.content 
             }))
+            .value()
         )
     }
 

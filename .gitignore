@@ -11,6 +11,7 @@ typings/
 
 # General
 # ======================
+repos/
 .tmp/
 dist/
 build/
