@@ -53,7 +53,7 @@ async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ pa
 
         let gistWithFiles = (await github.gists.get({ id: gist.id })).data
 
-        payments = payments.concat(_(gistWithFiles.files)
+        payments = _(gistWithFiles.files)
             .pickBy(file => PAYMENT_FILE_NAMES.map(f => f.name).includes(file.filename.toLowerCase()))
             .pickBy(file => validatePaymentFileContent(file.filename.toLowerCase(), file.content))
             .map(file => ({ 
@@ -61,7 +61,8 @@ async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ pa
                 destination: file.content 
             }))
             .value()
-        )
+            .concat(payments)
+        
     }
 
     return payments
