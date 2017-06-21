@@ -1,5 +1,6 @@
 import { gitStats, GitStat } from './lib/git-stats'
 import * as GitHubApi from 'github'
+import * as dbFactory from 'mongo-factory'
 import { getGithubUserFromCommit } from './lib/get-github-user-from-commit'
 import { PaymentDestination } from 'models'
 import * as fs from 'fs-extra'
