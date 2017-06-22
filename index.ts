@@ -17,7 +17,10 @@ async function main(params: { owner: string, repo: string }) {
         
         if (stats == null || stats.lastCommit !== lastCommit.sha) {
             let results = await getGithubStats(params)
-            await repoStatsCol.updateOne({ owner: results.owner, repo: results.repo }, { results }, { upsert: true })
+            await repoStatsCol.updateOne({ owner: results.owner, repo: results.repo }, { $set: { 
+                authors: results.authors,
+                lastCommit: results.lastCommit
+            } }, { upsert: true })
             console.log(results)
         }
         else {
@@ -28,6 +31,8 @@ async function main(params: { owner: string, repo: string }) {
     } catch(e) {
         console.log('Error! ', e)
     }
+
+    return
 
 }
 
