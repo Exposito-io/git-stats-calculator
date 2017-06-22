@@ -5,8 +5,9 @@ import { getGithubUserFromCommit } from './get-github-user-from-commit'
 import { PaymentDestination } from 'models'
 import * as fs from 'fs-extra'
 import * as simplegit from 'simple-git'
+import config from '../config'
 
-const configRepoPath = './repos'
+const configRepoPath = config.reposPath
 
 let github = new GitHubApi()
 
