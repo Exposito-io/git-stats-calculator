@@ -6,6 +6,7 @@ import { PaymentDestination } from 'models'
 import * as fs from 'fs-extra'
 import * as simplegit from 'simple-git'
 import config from '../config'
+import { getGithubLastCommit } from './get-github-last-commit'
 
 const configRepoPath = config.reposPath
 
@@ -43,7 +44,7 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
         owner: repo.owner,
         repo: repo.repo,
         authors: Array.from(stats.values()),
-        lastCommit: ''
+        lastCommit: (await getGithubLastCommit({ owner: repo.owner, repo: repo.repo })).sha
     }
     
 }
