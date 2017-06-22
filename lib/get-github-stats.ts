@@ -11,7 +11,7 @@ const configRepoPath = config.reposPath
 
 let github = new GitHubApi()
 
-export async function getGithubStats(repo: { owner: string, repo: string }) {
+export async function getGithubStats(repo: { owner: string, repo: string }): Promise<Stats> {
     let repoPath = `${configRepoPath}/${repo.owner}/${repo.repo}`
     let repoInfo = (await github.repos.get({ owner: repo.owner, repo: repo.repo })).data
     let git
@@ -39,11 +39,17 @@ export async function getGithubStats(repo: { owner: string, repo: string }) {
         stat.author.availablePaymentMethods = githubUser.availablePaymentsMethods
     }
 
-    return stats
+    return { 
+        authors: Array.from(stats.values()),
+        lastCommit: ''
+    }
     
 }
 
-export { GitStat }
+export class Stats {
+    authors: any[]
+    lastCommit: string
+}
 
 
 
