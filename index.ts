@@ -17,13 +17,14 @@ async function main(params: { owner: string, repo: string }) {
         
         if (stats == null || stats.lastCommit !== lastCommit.sha) {
             let results = await getGithubStats(params)
+            await repoStatsCol.updateOne({ owner: results.owner, repo: results.repo }, { results }, { upsert: true })
             console.log(results)
         }
         else {
             console.log(`${params.owner}/${params.repo} stats already up to date`)
         }
+
         
-        return
     } catch(e) {
         console.log('Error! ', e)
     }

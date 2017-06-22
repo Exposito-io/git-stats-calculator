@@ -40,6 +40,8 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
     }
 
     return { 
+        owner: repo.owner,
+        repo: repo.repo,
         authors: Array.from(stats.values()),
         lastCommit: ''
     }
@@ -47,6 +49,8 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
 }
 
 export class Stats {
+    owner: string
+    repo: string
     authors: any[]
     lastCommit: string
 }
