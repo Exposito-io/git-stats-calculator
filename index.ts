@@ -19,7 +19,9 @@ async function main(params: { owner: string, repo: string }) {
             let results = await getGithubStats(params)
             await repoStatsCol.updateOne({ owner: results.owner, repo: results.repo }, { $set: { 
                 authors: results.authors,
-                lastCommit: results.lastCommit
+                lastCommit: results.lastCommit,
+                totalLinesOfCode: results.totalLinesOfCode,
+                totalFileCount: results.totalFileCount
             } }, { upsert: true })
             console.log(results)
         }
