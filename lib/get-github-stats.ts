@@ -27,23 +27,22 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
     
     await git.fetch('origin', 'master')
 
-    let stats = await gitStats({ dir: repoPath })
+    let authorStats = await gitStats({ dir: repoPath })
 
-    for(let s of stats) {
-        let stat = s[1]
+    for(let stat of authorStats) {
         let githubUser = await getGithubUserFromCommit({ 
             owner: repoInfo.owner.login,
             repo: repoInfo.name,
-            commit: stat.author.commitSample 
+            commit: stat.commitSample 
         })
 
-        stat.author.availablePaymentMethods = githubUser.availablePaymentsMethods
+        stat.availablePaymentMethods = githubUser.availablePaymentsMethods
     }
 
     return { 
         owner: repo.owner,
         repo: repo.repo,
-        authors: Array.from(stats.values()),
+        authors: authorStats.map(author => { delete author.commitSample; return author }),
         lastCommit: (await getGithubLastCommit({ owner: repo.owner, repo: repo.repo })).sha
     }
     

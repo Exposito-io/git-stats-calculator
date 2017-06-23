@@ -20,13 +20,12 @@ export async function gitStats(opts?: GitStatsOptions) {
             for(let blame of blames) {
                 if (!stats.has(blame.authorMail)) {
                     stats.set(blame.authorMail, {
-                        author: {
-                            name: blame.author,
-                            email: blame.authorMail,
-                            commitSample: blame.commit
-                        },
+                        name: blame.author,
+                        email: blame.authorMail,
+                        commitSample: blame.commit,
                         linesOfCode: 0,
-                        files: []
+                        files: [],
+                        fileCount: 0
                     })
                 }
 
@@ -46,7 +45,7 @@ export async function gitStats(opts?: GitStatsOptions) {
 
     })
 
-    return stats
+    return Array.from(stats.values()).map(stat => { stat.fileCount = stat.files.length; return stat } )
     
 }
 
@@ -57,14 +56,18 @@ export async function gitStats(opts?: GitStatsOptions) {
 export class GitAuthor {
     name: string
     email: string
-    commitSample: string
+    commitSample?: string
     availablePaymentMethods?: any[]
 }
 
 export class GitStat {
-    author: GitAuthor
+    name: string
+    email: string
     linesOfCode: number = 0
     files: string[]
+    fileCount: number = 0
+    commitSample?: string
+    availablePaymentMethods?: any[]
 }
 
 export class GitStatsOptions {
