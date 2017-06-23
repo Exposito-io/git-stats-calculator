@@ -26,7 +26,7 @@ async function main(params: { owner: string, repo: string }) {
         else {
             console.log(`${params.owner}/${params.repo} stats already up to date`)
         }
-
+        return
         
     } catch(e) {
         console.log('Error! ', e)
@@ -38,6 +38,6 @@ async function main(params: { owner: string, repo: string }) {
 
 
 main({ owner: 'macor161', repo: 'ts-money' })
-
+.then(() => console.log('done'))
 
 
