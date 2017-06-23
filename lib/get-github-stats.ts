@@ -43,6 +43,8 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
         owner: repo.owner,
         repo: repo.repo,
         authors: authorStats.map(author => { delete author.commitSample; return author }),
+        totalLinesOfCode: authorStats.reduce((totalLines, author) => totalLines + author.linesOfCode, 0),
+        totalFileCount: authorStats.reduce((totalFiles, author) => totalFiles + author.fileCount, 0),
         lastCommit: (await getGithubLastCommit({ owner: repo.owner, repo: repo.repo })).sha
     }
     
@@ -52,6 +54,8 @@ export class Stats {
     owner: string
     repo: string
     authors: any[]
+    totalLinesOfCode: number
+    totalFileCount: number
     lastCommit: string
 }
 
