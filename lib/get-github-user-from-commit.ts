@@ -40,7 +40,7 @@ const PAYMENT_FILE_NAMES = [
  * 
  * @param githubUsername 
  */
-async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ paymentType: PaymentDestination, destination: string }[]> {
+export async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ paymentType: PaymentDestination, destination: string }[]> {
 
     let gists = (await github.gists.getForUser({
         username: githubUsername        

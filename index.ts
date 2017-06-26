@@ -1,5 +1,6 @@
-import { getGithubStats } from './lib/get-github-stats'
+import { getGithubStats, Stats } from './lib/get-github-stats'
 import { getGithubLastCommit } from './lib/get-github-last-commit'
+import { getGitHubUserPaymentMethods } from './lib/get-github-user-from-commit'
 import * as dbFactory from 'mongo-factory'
 import { Collection } from 'mongodb'
 import config from './config'
@@ -11,7 +12,7 @@ async function main(params: { owner: string, repo: string }) {
         let db = await dbFactory.getConnection(config.mongoUrl)
         let repoStatsCol = db.collection('repo-stats') as Collection
 
-        let stats = await repoStatsCol.findOne(params)
+        let stats = await repoStatsCol.findOne(params) as Stats
         let lastCommit = await getGithubLastCommit(params)
 
         
@@ -26,7 +27,12 @@ async function main(params: { owner: string, repo: string }) {
             console.log(results)
         }
         else {
-            console.log(`${params.owner}/${params.repo} stats already up to date`)
+            console.log(`${params.owner}/${params.repo} stats already up to date. Only updating payment methods`)
+            // TODO
+            let authors = stats.authors
+            for(let i = 0; i < authors.length; i++) {
+                //getGitHubUserPaymentMethods(authors[i].)
+            }
         }
         return
         
@@ -39,7 +45,7 @@ async function main(params: { owner: string, repo: string }) {
 }
 
 
-main({ owner: 'macor161', repo: 'ts-money' })
+main({ owner: 'macor161', repo: 'line-count-test' })
 .then(() => console.log('done'))
 
 
