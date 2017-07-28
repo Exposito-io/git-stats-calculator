@@ -7,7 +7,7 @@ import config from './config'
 import * as Queue from 'bull'
 
 
-let repoStatsQueue = new Queue('repo-stats', 'redis://127.0.0.1:6379')
+let repoStatsQueue = new Queue('repo-stats', config.queueServer)
 
 async function processQueue() {
     return new Promise((res, rej) => {
