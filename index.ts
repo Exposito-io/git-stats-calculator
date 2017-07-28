@@ -4,7 +4,21 @@ import { getGitHubUserPaymentMethods } from './lib/get-github-user-from-commit'
 import * as dbFactory from 'mongo-factory'
 import { Collection } from 'mongodb'
 import config from './config'
+import * as Queue from 'bull'
 
+
+let repoStatsQueue = new Queue('repo-stats', 'redis://127.0.0.1:6379')
+
+async function processQueue() {
+    return new Promise((res, rej) => {
+        repoStatsQueue.process((job, done) => {
+            console.log('processing job: ')
+            console.log(job.data.name)
+
+            done()
+        })
+    })
+}
 
 
 async function main(params: { owner: string, repo: string }) {
@@ -44,8 +58,11 @@ async function main(params: { owner: string, repo: string }) {
 
 }
 
-
+/*
 main({ owner: 'macor161', repo: 'line-count-test' })
-.then(() => console.log('done'))
+.then(() => console.log('done'))*/
 
-
+processQueue()
+.then(() => {
+    console.log('done')
+})

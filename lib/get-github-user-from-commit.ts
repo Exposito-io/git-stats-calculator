@@ -30,7 +30,7 @@ const PAYMENT_FILE_NAMES = [
  //   'bitcoin-testnet-address',
     { name: 'ethereum-address', paymentType: PaymentDestination.ETHEREUM_ADDRESS },
  //   'ethereum-testnet-address',
-    { name: 'exposito-wallet', paymentType: PaymentDestination.WALLET }
+    { name: 'exposito-wallet', paymentType: PaymentDestination.EXPOSITO_WALLET }
 ]
 
 
