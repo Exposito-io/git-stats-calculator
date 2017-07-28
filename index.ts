@@ -14,7 +14,7 @@ async function processQueue() {
         repoStatsQueue.process((job, done) => {
             console.log('processing job: ')
             console.log(job.data.name)
-
+            //job.progress(100)
             done()
         })
     })
