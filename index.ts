@@ -12,7 +12,7 @@ async function processQueue() {
     return new Promise((res, rej) => {
         repoStatsQueue.process(async (job, done) => {
             console.log(`processing job: ${job.data.owner}/${job.data.repo}`)
-            //await calculateStats({ owner: job.data.owner, repo: job.data.repo })
+            await calculateStats({ owner: job.data.owner, repo: job.data.repo })
             //job.progress(100)
             done()
         })
