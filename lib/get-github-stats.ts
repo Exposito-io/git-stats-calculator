@@ -11,6 +11,10 @@ import { getGithubLastCommit } from './get-github-last-commit'
 const configRepoPath = config.reposPath
 
 let github = new GitHubApi()
+github.authenticate({
+    token: 'adfaaf5b7f0adb4a0cf7638f9246463b517d5e55',
+    type: 'oauth'
+})
 
 export async function getGithubStats(repo: { owner: string, repo: string }): Promise<Stats> {
     let repoPath = `${configRepoPath}/${repo.owner}/${repo.repo}`
