@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es6",
+        "experimentalDecorators": true,
+        "target": "es2017",
         "rootDir": "./",
         "outDir": "./build/",
         "module": "commonjs",
@@ -17,7 +18,7 @@
         "lib": ["es2017", "dom"],
         "typeRoots": [
         ],
-        "types": ["chai", "mocha"]
+        "types": ["chai", "mocha", "node"]
     },
     "include": [
         "index.ts"

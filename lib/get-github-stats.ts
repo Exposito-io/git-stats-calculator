@@ -37,6 +37,7 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
         })
 
         stat.availablePaymentMethods = githubUser.availablePaymentsMethods
+        stat.image = githubUser.avatar_url
     }
 
     return { 

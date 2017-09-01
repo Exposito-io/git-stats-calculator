@@ -63,6 +63,7 @@ export class GitAuthor {
 export class GitStat {
     name: string
     email: string
+    image?: string
     linesOfCode: number = 0
     files: string[]
     fileCount: number = 0
