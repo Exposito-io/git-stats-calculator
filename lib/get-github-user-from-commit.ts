@@ -1,8 +1,13 @@
 import { PaymentDestination } from 'models'
 import * as GitHubApi from 'github'
 import * as _ from 'lodash'
+import config from '../config'
 
 let github = new GitHubApi()
+github.authenticate({
+    token: config.githubToken,
+    type: 'oauth'
+})
 
 export class GetUserFromCommitParams {
     owner: string
@@ -42,30 +47,35 @@ const PAYMENT_FILE_NAMES = [
  */
 export async function getGitHubUserPaymentMethods(githubUsername: string): Promise<{ paymentType: PaymentDestination, destination: string }[]> {
 
-    let gists = (await github.gists.getForUser({
-        username: githubUsername        
-    })).data
+    try {
+        let gists = (await github.gists.getForUser({
+            username: githubUsername        
+        })).data
 
-    let expositoGists = gists.filter(gist => gist.description.toLowerCase().trim() === 'exposito')
-    let payments = []
+        let expositoGists = gists.filter(gist => gist.description && gist.description.toLowerCase().trim() === 'exposito')
+        let payments = []
 
-    for(let gist of expositoGists) {
+        for(let gist of expositoGists) {
 
-        let gistWithFiles = (await github.gists.get({ id: gist.id })).data
+            let gistWithFiles = (await github.gists.get({ id: gist.id })).data
 
-        payments = _(gistWithFiles.files)
-            .pickBy(file => PAYMENT_FILE_NAMES.map(f => f.name).includes(file.filename.toLowerCase()))
-            .pickBy(file => validatePaymentFileContent(file.filename.toLowerCase(), file.content))
-            .map(file => ({ 
-                paymentType: PAYMENT_FILE_NAMES.find(f => f.name === file.filename.toLowerCase()).paymentType, 
-                destination: file.content 
-            }))
-            .value()
-            .concat(payments)
-        
+            payments = _(gistWithFiles.files)
+                .pickBy(file => PAYMENT_FILE_NAMES.map(f => f.name).includes(file.filename.toLowerCase()))
+                .pickBy(file => validatePaymentFileContent(file.filename.toLowerCase(), file.content))
+                .map(file => ({ 
+                    paymentType: PAYMENT_FILE_NAMES.find(f => f.name === file.filename.toLowerCase()).paymentType, 
+                    destination: file.content 
+                }))
+                .value()
+                .concat(payments)
+            
+        }
+
+        return payments
+    } catch(e) {
+        console.log(`Error fetching payment methods for ${githubUsername}`, e)
+        return []
     }
-
-    return payments
 }
 
 
