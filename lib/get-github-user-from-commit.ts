@@ -23,9 +23,13 @@ export async function getGithubUserFromCommit(params: GetUserFromCommitParams) {
         sha: params.commit
     })
 
-    let user = commitInfo.data.author
-    user.availablePaymentsMethods = await getGitHubUserPaymentMethods(user.login)
+    let user = commitInfo.data.author //|| commitInfo.data.commit.author
 
+    if (user)
+        user.availablePaymentsMethods = await getGitHubUserPaymentMethods(user.login)
+    else
+        console.log('Null user data: ', commitInfo.data)
+    
     return user
 
 }

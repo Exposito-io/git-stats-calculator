@@ -40,8 +40,10 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
             commit: stat.commitSample 
         })
 
-        stat.availablePaymentMethods = githubUser.availablePaymentsMethods
-        stat.image = githubUser.avatar_url
+        if (githubUser) {
+            stat.availablePaymentMethods = githubUser.availablePaymentsMethods
+            stat.image = githubUser.avatar_url
+        }
     }
 
     return { 
