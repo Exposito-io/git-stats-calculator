@@ -12,15 +12,15 @@ async function processQueue() {
     return new Promise((res, rej) => {
         repoStatsQueue.process(async (job, done) => {
             console.log(`processing job: ${job.data.owner}/${job.data.repo}`)
-            await calculateStats({ owner: job.data.owner, repo: job.data.repo })
+            let stats = await calculateStats({ owner: job.data.owner, repo: job.data.repo })
             //job.progress(100)
-            done()
+            done(null, stats)
         })
     })
 }
 
 
-async function calculateStats(params: { owner: string, repo: string }) {
+async function calculateStats(params: { owner: string, repo: string }): Promise<Stats> {
     let db = await dbFactory.getConnection(config.mongoUrl)
     let repoStatsCol = db.collection('repo-stats') as Collection
 
@@ -37,6 +37,7 @@ async function calculateStats(params: { owner: string, repo: string }) {
             totalFileCount: results.totalFileCount
         } }, { upsert: true })
         console.log(results)
+        return results
     }
     else {
         console.log(`${params.owner}/${params.repo} stats already up to date. Only updating payment methods`)

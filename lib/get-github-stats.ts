@@ -29,7 +29,7 @@ export async function getGithubStats(repo: { owner: string, repo: string }): Pro
 
     git = simplegit(repoPath)
     
-    await git.fetch('origin', 'master')
+    await git.fetch('origin', '+refs/heads/*:refs/heads/*')
 
     let authorStats = await gitStats({ dir: repoPath })
 
