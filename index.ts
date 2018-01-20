@@ -12,10 +12,19 @@ async function processQueue() {
     return new Promise((res, rej) => {
         repoStatsQueue.process(async (job, done) => {
             console.log(`processing job: ${job.data.owner}/${job.data.repo}`)
-            let stats = await calculateStats({ owner: job.data.owner, repo: job.data.repo })
-            //job.progress(100)
+            let results = await Promise.all([calculateStats({ owner: job.data.owner, repo: job.data.repo }), timeout(8000)])
+            //let stats = await calculateStats({ owner: job.data.owner, repo: job.data.repo })
+            let stats = results[0]
+            
             done(null, stats)
         })
+    })
+}
+
+
+function timeout(ms: number) {
+    return new Promise(res => {
+        setTimeout(() => res(), ms)
     })
 }
 
